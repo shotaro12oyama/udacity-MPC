@@ -89,7 +89,7 @@ int main() {
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
     string sdata = string(data).substr(0, length);
-    cout << sdata << endl;
+    //cout << sdata << endl;
     if (sdata.size() > 2 && sdata[0] == '4' && sdata[1] == '2') {
       string s = hasData(sdata);
       if (s != "") {
@@ -128,7 +128,7 @@ int main() {
           // In this case, 3.
           auto coeffs = polyfit(waypoints_x_eigen, waypoints_y_eigen, 3);
           double cte = polyeval(coeffs, 0);
-          double epsi = - atan(coeffs[1]);
+          double epsi = -atan(coeffs[1]);
 
           double steer_value = j[1]["steering_angle"];
           double throttle_value = j[1]["throttle"];
@@ -172,7 +172,7 @@ int main() {
           //.. add (x,y) points to list here, points are in reference to the vehicle's coordinate system
           // the points in the simulator are connected by a Yellow line
 
-          for (double i = 0; i < 50; i += 3){
+          for (double i = 0; i < 100; i += 3){
             next_x_vals.push_back(i);
             next_y_vals.push_back(polyeval(coeffs, i));
           }
