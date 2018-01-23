@@ -22,7 +22,7 @@ double dt = 0.1;
 const double Lf = 2.67;
 
 // The reference velocity is set to 40 mph.
-double ref_v = 50;
+double ref_v = 70;
 
 // The solver takes all the state variables and actuator
 // variables in a singular vector. Thus, we should to establish
@@ -57,9 +57,10 @@ class FG_eval {
 
     // The part of the cost based on the reference state.
     for (int t = 0; t < N; t++) {
-      fg[0] += 4000*CppAD::pow(vars[cte_start + t], 2);
-      fg[0] += 8000*CppAD::pow(vars[epsi_start + t], 2);
+      fg[0] += 3000*CppAD::pow(vars[cte_start + t], 2);
+      fg[0] += 2000*CppAD::pow(vars[epsi_start + t], 2);
       fg[0] += CppAD::pow(vars[v_start + t] - ref_v, 2);
+
     }
 
     // Minimize the use of actuators.
@@ -114,7 +115,7 @@ class FG_eval {
       // Only consider the actuation at time t.
       AD<double> delta = vars[delta_start + t - 1];
       AD<double> a = vars[a_start + t - 1];
-      if (t > 1) {   // use previous actuatopr taking latency into account
+      if (t > 1) {   // take latency into account
         a = vars[a_start + t - 2];
         delta = vars[delta_start + t - 2];
       }
@@ -124,7 +125,7 @@ class FG_eval {
 
       fg[1 + x_start + t] = x1 - (x0 + v0 * CppAD::cos(psi0) * dt);
       fg[1 + y_start + t] = y1 - (y0 + v0 * CppAD::sin(psi0) * dt);
-      fg[1 + psi_start + t] = psi1 - (psi0 + v0 * delta / Lf * dt);
+      fg[1 + psi_start + t] = psi1 - (psi0 - v0 * delta / Lf * dt);
       fg[1 + v_start + t] = v1 - (v0 + a * dt);
       fg[1 + cte_start + t] = cte1 - ((f0 - y0) + (v0 * CppAD::sin(epsi0) * dt));
       fg[1 + epsi_start + t] = epsi1 - ((psi0 - psides0) + v0 * delta / Lf * dt);
