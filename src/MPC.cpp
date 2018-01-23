@@ -53,7 +53,7 @@ class FG_eval {
     for (int i = 0; i < N; i++) {
       fg[0] += 2000/(1+i)*CppAD::pow(vars[cte_start + i], 2);
       fg[0] += 3000*CppAD::pow(vars[epsi_start + i], 2);
-      fg[0] += CppAD::pow(vars[v_start + i] - ref_v, 2);
+      fg[0] += 5*CppAD::pow(vars[v_start + i] - ref_v, 2);
     }
 
     for (int i = 0; i < N - 1; i++) {
@@ -148,13 +148,13 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs, double 
   double epsi = state[5];
 
   // taking latency into account
-  /*
+  
   double latency = 0.1; 
   x = x + v * cos(psi) * latency;
   y = y + v * sin(psi) * latency;
-  psi = psi + v * delta / Lf * latency;
+  psi = psi - v * delta / Lf * latency;
   v = v + a * latency;
-  */
+  
   
   // TODO: Set the number of model variables (includes both states and inputs).
   // For example: If the state is a 4 element vector, the actuators is a 2

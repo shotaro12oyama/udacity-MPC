@@ -33,4 +33,4 @@ I transformed `ptsx`, `ptsy` (The global x, y positions of the waypoints) from c
 
 #### Model Predictive Control with Latency ####
 
-I try to predict 0.1 sec feature state as initial. (#150-157 line, in MPC.cpp) However, it did not work and my result seems good without this consideration. (the files i submitted disaple this 0.1s prediction.)
+I try to predict 0.1 sec feature state as initial, (#150-157 line, in MPC.cpp) in order for the vehicle to decide steer_angle and throttle based on the predicted waypoint after 0.1s.
