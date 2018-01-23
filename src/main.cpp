@@ -113,6 +113,7 @@ int main() {
           vector<double> waypoints_x;
           vector<double> waypoints_y;
 
+          // to be from car's perspective
           for (int i = 0; i < ptsx.size(); i++) {
             double dx = ptsx[i] - px;
             double dy = ptsy[i] - py;
@@ -135,10 +136,9 @@ int main() {
 
           Eigen::VectorXd state(6);
           state << 0, 0, 0, v, cte, epsi;
-          auto vars = mpc.Solve(state, coeffs);
+          auto vars = mpc.Solve(state, coeffs, steer_value, throttle_value);
           steer_value = vars[0];
           throttle_value = vars[1];
-        
 
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
