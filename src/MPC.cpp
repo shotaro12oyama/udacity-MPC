@@ -154,7 +154,13 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs, double 
   y = y + v * sin(psi) * latency;
   psi = psi - v * delta / Lf * latency;
   v = v + a * latency;
-  
+
+  double f = coeffs[0] + coeffs[1] * x + coeffs[2] * CppAD::pow(x, 2) + coeffs[3] * CppAD::pow(x, 3);
+  cte = cte - ((f - y) + (v * CppAD::sin(epsi) * latency));
+  double psides = CppAD::atan(coeffs[1] + 2 * coeffs[2] * x + 3 * coeffs[3] * CppAD::pow(x, 2));
+  epsi = epsi - ((psi - psides) - v/Lf * delta * latency);
+      
+
   
   // TODO: Set the number of model variables (includes both states and inputs).
   // For example: If the state is a 4 element vector, the actuators is a 2
